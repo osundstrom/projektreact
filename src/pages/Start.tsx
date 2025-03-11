@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import "../css/Start.css";
-
+import ReactPaginate from "react-paginate";
+import { Book } from "../models/book";
+ 
 const startPage = () => { 
 
     const [books, setBooks] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [pageCurrent, setPageCurrent] = useState<number>(1); //första sidan
+    const [pageCurrent, setPageCurrent] = useState<number>(1); 
     const [allBooks, setAllBooks] = useState<number>(0);
+    
+    const booksPerPage = 20;
+    const numberPages = Math.ceil(allBooks/booksPerPage);
+
 
   useEffect(() => {
     fetchBooks();
@@ -17,17 +23,25 @@ const startPage = () => {
     setLoading(true);
   try {
     const startPage = (pageCurrent - 1) * 20;
-
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=a&maxResults=20&startIndex=${startPage}`);
+    console.log(startPage);
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=MIUN&maxResults=${booksPerPage}&startIndex=${startPage}`);
     
     if (!response.ok) {
         throw new Error("fel vid hämtning");
       }
 
     const data = await response.json();
-    setBooks(data.items);
-    setAllBooks(data.totalItems);
+    if (data.items && data.items.length > 0) {
+      setBooks(data.items);
+      setAllBooks(data.totalItems);
     console.log(data.totalItems);
+    
+    }else{
+      setBooks([]);
+      setAllBooks(0);
+      setError("Inga böcker hittades");
+    }
+    
     setLoading(false);
 
   } catch (error) {
@@ -37,47 +51,26 @@ const startPage = () => {
   }
 };
 
-
 //-------------------------PAGINATION-------------------------------------------------------------//
-  const pagesExist = Math.ceil(allBooks / 20); //20 böcker per sida
-  const pagnationMax = 10; //visa 10 i pagnering
+const changePage = ({ selected } : { selected : number }) => {
+  setPageCurrent(selected  + 1);
+};
 
-  const pageChange = (x: number) => { 
-    setPageCurrent(x);
-  }
-
-  const allPagesBooks = () => {
-    
-    const allPage = [];
-
-
-    if (pagesExist < pagnationMax) {
-      for (let i = 1; i <= pagesExist; i++) {
-        allPage.push(i);
-        };
-    }
-
-    if (pagesExist > pagnationMax) {
-        for (let i = 1; i <= 10; i++) {
-            allPage.push(i);
-            };
-        
-    };
-
-    
-  return allPage;
-  }
 
 //-------------------------RETURN-------------------------------------------------------------//
   return (
     <>
     
     <div className="container text-center">
-    
+      {loading && <div className="spinner-border" role="status">
+     <span className="visually-hidden">Loading...</span>
+    </div>}
+
+      {error && <p>{error}</p>}
       <div className="row" >
         
-        {books.map((book: any) => (
-        <div className="col-12 col-md-3 mb-4" key={book.id}>
+        {books.map((book: Book, index) => (
+        <div className="col-12 col-md-3 mb-4" key={`${book.id}-${index}`}>
         <div className="card oneCard">
             <img src={book.volumeInfo.imageLinks?.thumbnail} className="card-img-top" alt={book.volumeInfo.title} />
         <div className="card-body">
@@ -91,35 +84,28 @@ const startPage = () => {
       </div>
 
     {/*pagnering*/}
-       
-        <nav aria-label="pagnation">
-
- <ul className="pagination">
-    <li className={`page-item ${pageCurrent === 1 ? "disabled" : ""}`}>
-      <button className="page-link" onClick={() => pageChange(pageCurrent - 1)}>Tidigare</button>
-    </li>
-    {/*------------------------array för alla sidor--------------------------------------------- */}
-    {allPagesBooks().map((page, number) => (
-              <li
-                key={number}
-                className={`page-item ${
-                  pageCurrent === number + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => pageChange(number + 1)}
-                >
-                  {number + 1}
-                </button>
-              </li>
-            ))}
-    <li className="page-item">
-      <button className="page-link">Nästa</button>
-    </li>
-  </ul>
-</nav>
-
+    {allBooks > 0 &&(
+    <ReactPaginate
+        previousLabel={"Tidigare"}
+        nextLabel={"Nästa"}
+        breakLabel={"..."}
+        pageCount={numberPages}
+        marginPagesDisplayed={0}
+        pageRangeDisplayed={6}
+        onPageChange={changePage}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item disabled"}
+        breakLinkClassName={"page-link"}
+        activeClassName={"active"}
+        renderOnZeroPageCount={null}
+      />
+    )}
     </div>
     
     </>
