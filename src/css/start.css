@@ -11,3 +11,19 @@
     margin: 10px;
     padding: 10px;
 }
+
+.card-img-top {
+    width: 100%;
+    height: 30vh; 
+    object-fit: cover;
+    object-position: center;
+  }
+
+#buttonInfo{
+    position: absolute;
+    bottom: 1vh;
+    left: 50%; 
+    transform: translateX(-50%); 
+    display: flex;
+    width: fit-content;
+}

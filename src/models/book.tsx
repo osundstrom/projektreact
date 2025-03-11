@@ -3,7 +3,7 @@ export interface Book {
     id: string;
     volumeInfo: {
       title: string;
-      subtitle?: string;
+      subtitle: string;
       authors: string[];
       publishedDate?: string;
       industryIdentifiers: {
@@ -27,6 +27,10 @@ export interface Book {
       imageLinks: {
         smallThumbnail: string;
         thumbnail: string;
+        small: string;
+        medium: string;
+        large: string;
+        extraLarge: string;
       };
       language: string;
       previewLink: string;

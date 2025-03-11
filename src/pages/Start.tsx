@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import "../css/Start.css";
 import ReactPaginate from "react-paginate";
 import { Book } from "../models/book";
+import { useNavigate } from "react-router-dom";
  
 const startPage = () => { 
 
-    const [books, setBooks] = useState<any[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [pageCurrent, setPageCurrent] = useState<number>(1); 
@@ -24,7 +25,7 @@ const startPage = () => {
   try {
     const startPage = (pageCurrent - 1) * 20;
     console.log(startPage);
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=MIUN&maxResults=${booksPerPage}&startIndex=${startPage}`);
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=OskarSundström&maxResults=${booksPerPage}&startIndex=${startPage}`);
     
     if (!response.ok) {
         throw new Error("fel vid hämtning");
@@ -35,7 +36,7 @@ const startPage = () => {
       setBooks(data.items);
       setAllBooks(data.totalItems);
     console.log(data.totalItems);
-    
+
     }else{
       setBooks([]);
       setAllBooks(0);
@@ -56,6 +57,12 @@ const changePage = ({ selected } : { selected : number }) => {
   setPageCurrent(selected  + 1);
 };
 
+const navigate = useNavigate();
+//Skicka till sida för enskild boken
+const openBook = (bookId: string) => {
+  navigate(`/books/${bookId}`);
+}
+
 
 //-------------------------RETURN-------------------------------------------------------------//
   return (
@@ -72,17 +79,18 @@ const changePage = ({ selected } : { selected : number }) => {
         {books.map((book: Book, index) => (
         <div className="col-12 col-md-3 mb-4" key={`${book.id}-${index}`}>
         <div className="card oneCard">
-            <img src={book.volumeInfo.imageLinks?.thumbnail} className="card-img-top" alt={book.volumeInfo.title} />
+            <img src={book.volumeInfo.imageLinks?.smallThumbnail} className="card-img-top" alt={book.volumeInfo.title} />
         <div className="card-body">
             <h5 className="card-title">{book.volumeInfo.title}</h5>
             <p className="card-text">{book.volumeInfo.authors?.join(", ")}</p>
-            <a href="#" className="btn btn-primary">Länk bok</a>
+            <button onClick={() => openBook(book.id)} id="buttonInfo" className="btn btn-primary">Länk bok</button>
         </div>
         </div>
         </div>
         ))}
+        
       </div>
-
+      
     {/*pagnering*/}
     {allBooks > 0 &&(
     <ReactPaginate
