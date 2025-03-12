@@ -21,16 +21,21 @@ const startPage = ({category}: CategoryHeader) => {
     const booksPerPage = 20;
     const numberPages = Math.ceil(allBooks/booksPerPage);
 
-    const [searchBox, setSearchBox] = useState<string>(""); 
-    const [searchAuto, setSearchAuto] = useState<string>("sci-fi"); //måste ha en sökterm för google api, stadard term :)
+    const [searchBox, setSearchBox] = useState<string>("")  ; 
+    const [searchAuto, setSearchAuto] = useState<string>(""); //måste ha en sökterm för google api, stadard term :)
 
   useEffect(() => {
     document.title = "Startsida";
-    fetchBooks();
+    if(!searchAuto){
+      setSearchAuto("a");//får ej avra tom
+    }
+    if (searchAuto) {
+      fetchBooks();
+    }
   }, [pageCurrent, searchAuto]);
 
   useEffect(() => {
-    setSearchAuto(category)
+    setSearchAuto((category)|| "a");;//får ej avra tom
   }, [category]);
 
   const fetchBooks = async () => {

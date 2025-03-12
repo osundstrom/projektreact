@@ -7,11 +7,14 @@ import Start from './pages/Start.tsx';
 import OneBook from './pages/OneBook.tsx';
 import './index.css';
 import { useState } from "react";
+import Profile from "./pages/Profile.tsx";
+import Login from "./pages/Login.tsx";
+
 
 
 
 function App() {
-  const [category, setCategory] = useState('sci-fi');
+  const [category, setCategory] = useState('');
 
 
   return (
@@ -20,6 +23,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Start category={category}/>}/>
         <Route path="/books/:bookId" element={<OneBook />} />
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/profil" element={<Profile/>}/>
       </Routes>
       <Footer />
     </>
