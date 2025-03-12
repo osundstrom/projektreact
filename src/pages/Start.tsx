@@ -3,8 +3,14 @@ import "../css/Start.css";
 import ReactPaginate from "react-paginate";
 import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
- 
-const startPage = () => { 
+
+interface CategoryHeader {
+  category: string; 
+}
+
+
+const startPage = ({category}: CategoryHeader) => { 
+
 
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -15,17 +21,24 @@ const startPage = () => {
     const booksPerPage = 20;
     const numberPages = Math.ceil(allBooks/booksPerPage);
 
+    const [searchBox, setSearchBox] = useState<string>(""); 
+    const [searchAuto, setSearchAuto] = useState<string>("sci-fi"); //måste ha en sökterm för google api, stadard term :)
 
   useEffect(() => {
+    document.title = "Startsida";
     fetchBooks();
-  }, [pageCurrent]);
+  }, [pageCurrent, searchAuto]);
+
+  useEffect(() => {
+    setSearchAuto(category)
+  }, [category]);
 
   const fetchBooks = async () => {
     setLoading(true);
   try {
     const startPage = (pageCurrent - 1) * 20;
     console.log(startPage);
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=OskarSundström&maxResults=${booksPerPage}&startIndex=${startPage}`);
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchAuto}&orderBy=newest&maxResults=${booksPerPage}&startIndex=${startPage}`);
     
     if (!response.ok) {
         throw new Error("fel vid hämtning");
@@ -64,6 +77,15 @@ const openBook = (bookId: string) => {
 }
 
 
+//-------------------------Sök-------------------------------------------------------------//
+
+const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setSearchAuto(searchBox.trim());
+  setPageCurrent(1);
+};
+
+
 //-------------------------RETURN-------------------------------------------------------------//
   return (
     <>
@@ -75,7 +97,20 @@ const openBook = (bookId: string) => {
 
       {error && <p>{error}</p>}
       <div className="row" >
+
+   {/*Sök*/}
+   <form onSubmit={searchForm} className="mb-4 d-flex justify-content-center">
+          <input
+            type="text"
+            placeholder="Sök efter böcker..."
+            value={searchBox}
+            onChange={(e) => setSearchBox(e.target.value)}
+            className="form-control w-50"
+          />
+          <button type="submit" className="btn btn-primary ms-2">Sök</button>
+        </form>
         
+        {/*Böcker*/}
         {books.map((book: Book, index) => (
         <div className="col-12 col-md-3 mb-4" key={`${book.id}-${index}`}>
         <div className="card oneCard">

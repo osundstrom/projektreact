@@ -26,6 +26,7 @@ const OneBook = () => {
         const data = await response.json();
         console.log(data);
         setBook(data);
+        document.title = `${data.volumeInfo.title}`;
         //--------------------------------------fetch recensioner----------------------------------------------------//
         const reviewsResponse = await fetch(`http://localhost:3000/review/${bookId}`);
         if (reviewsResponse.ok) { //om hittas 
