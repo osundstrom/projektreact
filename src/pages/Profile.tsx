@@ -34,7 +34,10 @@ const Profile = () => {
         if (!response.ok) {
           throw new Error(data.error);
         }
-        setReviews(data);
+        
+        setReviews(data)
+        document.title = `Profil: ${data[0].username}`;
+        console.log(data)
       } catch (error: any) {
         setError(error.message);
       }

@@ -11,7 +11,7 @@ const Login = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
    
-
+    document.title = "Login";
     const navigate = useNavigate();
 
     //------------------------Post/login------------------------------------------------//
