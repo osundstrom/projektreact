@@ -26,15 +26,15 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
 
     return (
         <>
-                <div className="container">
+                <div className="container-fluid">
                 
                     <Link to="/">
-                        <img src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" />
+                        <img src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" onClick={() => CategoryChoose("a")} />
                     </Link>
                 
                 
 
-            <nav className="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
+        <nav className="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>

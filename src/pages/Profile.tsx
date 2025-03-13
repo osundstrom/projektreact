@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Review } from "../models/review";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import "../css/Profil.css"
 
 const Profile = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
-  
   const token = Cookies.get("token");
   const userId = Cookies.get("userId");
 
@@ -38,6 +41,7 @@ const Profile = () => {
         setReviews(data)
         document.title = `Profil: ${data[0].username}`;
         console.log(data)
+  
       } catch (error: any) {
         setError(error.message);
       }
@@ -45,8 +49,12 @@ const Profile = () => {
     };
 
     fetchReviews();
-  }, [userId, token, navigate]);
+  }, [userId, token, navigate,]);
 
+//---------------------------------------------------------------------------//
+
+
+//------------------------------------------------------------------------------------//
   return (
     <div className="container">
 
@@ -57,17 +65,27 @@ const Profile = () => {
       )}
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-
+      <h3>Dina recensioner</h3>
       <div className="reviews">
-        {reviews.length < 1 ? (
-          <p>Du har inte skrivit några recensioner ännu</p>
+        {reviews.length < 1 ?(
+          <p>Du har inte lämnat några recensioner ännu</p>
         ) : (
+
           reviews.map((review, index) => (
+            
             <div key={index} className="review-card">
-              <h2>{review.username}</h2>
-              <h5>{review.bookId}</h5>
+              <h4>{review.title}</h4>
               <p>{review.content}</p>
               <p><strong>Betyg: </strong>{review.grade}</p>
+
+              {/*Redigera*/}
+              <button
+                onClick={() => navigate(`/edit/${review._id}`)}
+                className="btn btn-warning"
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </button>
+              
             </div>
           ))
         )}

@@ -42,7 +42,7 @@ const Login = () => {
             throw new Error(data.error || "ogiltiga uppgifter");
         }else {
 
-            
+            Cookies.set("username", data.username, {expires: 1});
             Cookies.set("token", data.recivedToken.token, {expires: 1});
             Cookies.set("userId", data.userId, { expires: 1 });
             console.log(data.token, data.userId)
@@ -89,6 +89,8 @@ const Login = () => {
                 <br />
                 <button className="btn btn-primary" type="submit">Logga in</button>
             </form>
+
+           
         </div>
     );
     

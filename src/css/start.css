@@ -27,3 +27,7 @@
     display: flex;
     width: fit-content;
 }
+
+#fullDiv{
+    margin-top: 2vh;
+}

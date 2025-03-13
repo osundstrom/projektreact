@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Book } from "../models/book";
 import { Review } from "../models/review";
+import Cookies from "js-cookie";
+import "../css/OneBook.css"
 
 const OneBook = () => {
   const { bookId } = useParams<{ bookId: string }>();
@@ -11,6 +13,9 @@ const OneBook = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
+  const token = Cookies.get("token");
 
   useEffect(() => {
 
@@ -26,7 +31,8 @@ const OneBook = () => {
         const data = await response.json();
         console.log(data);
         setBook(data);
-        document.title = `${data.volumeInfo.title}`;
+        document.title = `${data.volumeInfo.title}`; //sätter title
+
         //--------------------------------------fetch recensioner----------------------------------------------------//
         const reviewsResponse = await fetch(`http://localhost:3000/review/${bookId}`);
         if (reviewsResponse.ok) { //om hittas 
@@ -47,9 +53,17 @@ const OneBook = () => {
     fetchBook();
   }, [bookId]);
 
+
+
+  const ReviewButton = () => {
+    const title = book?.volumeInfo.title;
+    navigate(`/review/${bookId}`, {
+      state: {title},
+    });
+  };
   //--------------------------------------return----------------------------------------------------//
   return (
-    <div className="container text-center">
+    <div className="container text-center" id="fullOneBook">
       {/* Error Message */}
       {error && <p className="text-danger">{error}</p>}
 
@@ -83,14 +97,21 @@ const OneBook = () => {
               <p className="card-text">
                 Antal sidor: {book.volumeInfo.pageCount}
               </p>
+
+              {/* lämna recension, om token*/}
+              {token && (
+                <button className="btn btn-success mt-3" onClick={ReviewButton}>
+                  Lämna en recension
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
 
       {/* Recensioner */}
+      <div id="divReviews">
       <div className="card-body text-left">
-
         <h3>Recensioner</h3>
       </div>
       {reviews.length > 0 ? (
@@ -105,9 +126,11 @@ const OneBook = () => {
             </div>
           </div>
         ))
+        
       ) : (
         <p>Inga recensioner ännu</p>
       )}
+    </div>
     </div>
 
   );

@@ -95,7 +95,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
   return (
     <>
     
-    <div className="container text-center">
+    <div className="container text-center" id="fullDiv">
       {loading && <div className="spinner-border" role="status">
      <span className="visually-hidden">Loading...</span>
     </div>}
