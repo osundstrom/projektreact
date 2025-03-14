@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Book } from "../models/book";
 import { Review } from "../models/review";
 import Cookies from "js-cookie";
 import "../css/OneBook.css"
+import RateBook from "../components/Grade";
 
 const OneBook = () => {
   const { bookId } = useParams<{ bookId: string }>();
@@ -118,11 +119,17 @@ const OneBook = () => {
         reviews.map((review) => (
           <div className="card" style={{ marginBottom: "2vh" }} key={review.bookId}>
             <div className="card-header">
-              <p>{review.username}</p>
+              <h4>{review.username}</h4>
             </div>
             <div className="card-body">
-              <p className="card-title">Betyg: {review.grade}</p>
+            <div className="container" id="recensionTextDiv">
+              <p><strong> <u>Betyg</u> </strong></p>
+            <p>
+              <RateBook grade={review.grade} setGrade={() => {}} />
+            </p>
+                  <p><strong><u>Recension</u></strong></p>
               <p className="card-text">{review.content}</p>
+              </div>
             </div>
           </div>
         ))

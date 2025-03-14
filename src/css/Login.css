@@ -1,0 +1,16 @@
+#buttonRegister{
+    display: block;
+    position: relative;
+    float: right;
+}
+
+#buttonLoggin{
+    display: block;
+    float: left;
+   
+}
+
+
+#fullLoginForm{
+    margin-top: 4vh;
+}

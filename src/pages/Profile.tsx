@@ -5,6 +5,7 @@ import { Review } from "../models/review";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import "../css/Profil.css"
+import RateBook from "../components/Grade"
 
 const Profile = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -76,7 +77,11 @@ const Profile = () => {
             <div key={index} className="review-card">
               <h4>{review.title}</h4>
               <p>{review.content}</p>
-              <p><strong>Betyg: </strong>{review.grade}</p>
+              <p className="d-flex align-items-center"><strong>Betyg: </strong>
+              <span className="ms-2">
+              <RateBook grade={review.grade} setGrade={() => {}} />
+              </span>
+              </p>
 
               {/*Redigera*/}
               <button

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
+import RateBook from "../components/Grade"
+import "../css/Grade.css"
+
 
 
 const newReview = () => {
@@ -12,7 +15,7 @@ const newReview = () => {
     const userId = Cookies.get("userId");
     const username = Cookies.get("username")
 
-    const [grade, setGrade] = useState<number>(5);
+    const [grade, setGrade] = useState<number>(0);
     const [content, setContent] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
@@ -68,33 +71,18 @@ const newReview = () => {
     
 
     return (
-        <div className="container">
+        <div className="container" id='fullDivForm'>
             <h4>Recenserar: {location.state.title}</h4>
+            <hr />
+            <h5>Användare: {username}</h5>
             {error && <p className="text-danger">{error}</p>}
 
             <form onSubmit={AddReview}>
 
-                <div className="mb-3">
-                    <label className="form-label">Användarnamn:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={username}
-                        readOnly
-                    />
-                </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Betyg (1-5):</label>
-                    <select
-                        className="form-select"
-                        value={grade}
-                        onChange={(e) => setGrade(Number(e.target.value))}
-                    >
-                        {[1, 2, 3, 4, 5].map((num) => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </select>
+                <label className="form-label">Betyg:</label>
+                <RateBook grade={grade} setGrade={setGrade} />
                 </div>
 
                 <div className="mb-3">

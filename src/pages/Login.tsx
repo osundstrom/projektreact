@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cookies from "js-cookie"; 
 import { useNavigate } from "react-router-dom";
+import "../css/Login.css"
 
 
 const Login = () => {
@@ -49,13 +50,15 @@ const Login = () => {
             navigate("/profil");
         
         }} catch(error: any) {
-            setError(error.message);
+            setError( "Felaktiga inloggningsuppgifter");
         }
         setLoading(false)
     }
 
     return (
-        <div className="container">
+        <div className="container" id="fullLoginForm">
+             <div className="row justify-content-center">
+             <div className="col-md-6 col-lg-4">
             <h2>Logga in</h2>
             <form onSubmit={fetchLogin}> {/*fetchLogin vid submit*/}
                 <div className="form-group">
@@ -79,7 +82,7 @@ const Login = () => {
                     />
                 </div>
                  {/*visa error*/}
-                {error && <p style={{ color: "red", fontSize: "1.2rem" }} className="error-text">{error}</p>}
+                {error && <p className="text-danger">{error}</p>}
                 {/* laddning */}
                 {loading && (
                     <div className="spinner-border" role="status">
@@ -87,10 +90,19 @@ const Login = () => {
                     </div>
                         )}
                 <br />
+                <div className="mt-3" id="buttonLoggin">
                 <button className="btn btn-primary" type="submit">Logga in</button>
+                </div>
             </form>
 
-           
+            {/*Register*/}
+      <div className="mt-3" id="buttonRegister">
+        <button className="btn btn-secondary" onClick={() => navigate("/Register")} >
+          Skapa konto
+        </button>
+      </div>
+      </div>
+      </div>
         </div>
     );
     

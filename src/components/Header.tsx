@@ -46,10 +46,6 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
           <Link className="nav-link active" onClick={() => CategoryChoose("a")} aria-current="page" to="/">Start</Link>
         </li>
 
-        <li className="nav-item">
-          <a className="nav-link active" href="#">Betyg</a>
-        </li>
-
         <li className="nav-item dropdown">
           <a className="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Kategorier
@@ -83,8 +79,8 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
                
                 <ul className="navbar-nav ml-auto">
                   <li className="nav-item">
-                    <Link className="nav-link active" to="/login">
-                      Login
+                    <Link className="nav-link active btn-success" to="/login">
+                      Logga in
                     </Link>
                   </li>
                 </ul>

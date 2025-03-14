@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { Review } from '../models/review';
+import "../css/editReview.css";
+import RateBook from "../components/Grade"
 
 const EditReview = () => {
     const { _id } = useParams();
@@ -118,7 +120,8 @@ const EditReview = () => {
 
     return (
         <div className="container">
-            
+            <div className="row justify-content-center">
+            <div className="col">
             {error && <p className="text-danger">{error}</p>}
 
             {review ? (
@@ -136,17 +139,9 @@ const EditReview = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Betyg (1-5):</label>
-                        <select
-                            className="form-select"
-                            value={grade}
-                            onChange={(e) => setGrade(Number(e.target.value))}
-                        >
-                            {[1, 2, 3, 4, 5].map((num) => (
-                                <option key={num} value={num}>{num}</option>
-                            ))}
-                        </select>
-                    </div>
+                <label className="form-label">Betyg:</label>
+                <RateBook grade={grade} setGrade={setGrade} />
+                </div>
 
                     <div className="mb-3">
                         <label className="form-label">Recension:</label>
@@ -157,19 +152,25 @@ const EditReview = () => {
                             required
                         />
                     </div>
-
-                    <button type="submit" className="btn btn-success">
+                    
+                    <button id='buttonSave' type="submit" className="btn btn-success">
                     <FontAwesomeIcon icon={faFloppyDisk} /> 
                         </button>
+                        
                 </form>
-
-            <button onClick={deleteReview} className="btn btn-danger mt-3">
+                
+            <button id="buttonDelete" onClick={deleteReview} className="btn btn-danger mt-3">
                 <FontAwesomeIcon icon={faTrashCan} /> 
             </button>
+            
+            
             </>
         ) : (
-            <p>Laddar recension...</p>
+            <p>Hittar ej recension</p>
         )}
+        
+        </div>
+        </div>
         </div>
     );
 };

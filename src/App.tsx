@@ -11,6 +11,7 @@ import Profile from "./pages/Profile.tsx";
 import Login from "./pages/Login.tsx";
 import NewReview from "./pages/newReview.tsx";
 import EditReview from "./pages/editReview.tsx";
+import NewUser from "./pages/newUser.tsx";
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/profil" element={<Profile/>}/>
         <Route path="/review/:bookId" element={<NewReview />} />
         <Route path="/edit/:_id" element={<EditReview />} />
+        <Route path="/register" element={<NewUser />} />
       </Routes>
       <Footer />
     </>

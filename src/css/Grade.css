@@ -1,0 +1,14 @@
+.starNot {
+    font-size: 150%;
+    color: rgb(172, 172, 172);
+    
+}
+
+.starYes {
+    color: gold;
+    font-size: 150%;
+}
+
+#fullDivForm {
+    margin-top: 4vh;
+}

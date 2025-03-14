@@ -35,7 +35,7 @@ const startPage = ({category}: CategoryHeader) => {
   }, [pageCurrent, searchAuto]);
 
   useEffect(() => {
-    setSearchAuto((category)|| "a");;//får ej avra tom
+    setSearchAuto((category)|| "a");//får ej avra tom
   }, [category]);
 
   const fetchBooks = async () => {
