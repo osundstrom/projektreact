@@ -12,7 +12,7 @@ import Login from "./pages/Login.tsx";
 import NewReview from "./pages/newReview.tsx";
 import EditReview from "./pages/editReview.tsx";
 import NewUser from "./pages/newUser.tsx";
-
+import {AuthCookies} from "./components/AllCookie.tsx"
 
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
 
   return (
     <>
+    <AuthCookies>
       <Header setCategory={setCategory} />
       <Routes>
         <Route path="/" element={<Start category={category}/>}/>
@@ -32,7 +33,9 @@ function App() {
         <Route path="/register" element={<NewUser />} />
       </Routes>
       <Footer />
+      </AuthCookies>
     </>
+    
   )
 }
 

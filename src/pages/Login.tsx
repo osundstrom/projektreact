@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Cookies from "js-cookie"; 
+//import Cookies from "js-cookie"; 
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css"
+import {useAllCookies} from "../components/AllCookie"
 
 
 const Login = () => {
@@ -14,6 +15,8 @@ const Login = () => {
    
     document.title = "Login";
     const navigate = useNavigate();
+
+    const {setUser} = useAllCookies();
 
     //------------------------Post/login------------------------------------------------//
     const fetchLogin = async (e: React.FormEvent) => {
@@ -42,12 +45,15 @@ const Login = () => {
         if (!response.ok) {
             throw new Error(data.error || "ogiltiga uppgifter");
         }else {
-
+            setUser(data.userId, data.recivedToken.token, data.username, data.role)
+            
+            /*
             Cookies.set("username", data.username, {expires: 1});
             Cookies.set("token", data.recivedToken.token, {expires: 1});
             Cookies.set("userId", data.userId, { expires: 1 });
             Cookies.set("role" , data.role, { expires: 1 });
             console.log(data.token, data.userId)
+            */
             navigate("/profil");
         
         }} catch(error: any) {

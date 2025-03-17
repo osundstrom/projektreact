@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { Review } from '../models/review';
 import "../css/editReview.css";
-import RateBook from "../components/Grade"
+import RateBook from "../components/Grade";
+import { useAllCookies } from '../components/AllCookie'; 
 
 const EditReview = () => {
     const { _id } = useParams();
     console.log(_id)
     const navigate = useNavigate();
 
+    const { token, userId, username } = useAllCookies();
+    /*
     const token = Cookies.get("token");
     const userId = Cookies.get("userId");
     const username = Cookies.get("username");
+    */
 
     const [review, setReview] = useState<Review | null>(null);
     const [grade, setGrade] = useState(5);

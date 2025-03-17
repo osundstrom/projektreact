@@ -3,6 +3,8 @@ import "../css/Start.css";
 import ReactPaginate from "react-paginate";
 import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
+import { useAllCookies } from "../components/AllCookie";
+import RateBook from "../components/Grade";
 
 interface CategoryHeader {
   category: string; 
@@ -10,7 +12,7 @@ interface CategoryHeader {
 
 
 const startPage = ({category}: CategoryHeader) => { 
-
+ 
 
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -23,6 +25,9 @@ const startPage = ({category}: CategoryHeader) => {
 
     const [searchBox, setSearchBox] = useState<string>(""); 
     const [searchAuto, setSearchAuto] = useState<string>(""); //måste ha en sökterm för google api, stadard term :)
+
+    const {reviews} = useAllCookies(); 
+    console.log(reviews);
 
   useEffect(() => {
     document.title = `Startsida - ${pageCurrent}`;
@@ -91,6 +96,21 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
   setPageCurrent(1);
 };
 
+//-------------------------avg-------------------------------------------------------------//
+
+const AvgGrade = () => {
+  if (reviews.length > 0) {
+    const total = reviews.reduce((x, review) => x + review.grade, 0);
+    const avg = (total / reviews.length);
+  return  avg
+  
+  } else {
+    const avg = 0;
+    return avg;
+  }
+  
+};
+
 
 //-------------------------RETURN-------------------------------------------------------------//
   return (
@@ -124,11 +144,29 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         <div className="card-body">
             <h5 className="card-title">{book.volumeInfo.title}</h5>
             <p className="card-text">{book.volumeInfo.authors?.join(", ")}</p>
+
+             
+         
+                {reviews.length > 0 ? (
+                  <>
+                    <RateBook grade={Number(AvgGrade())} setGrade={() => {}} />
+                  </>
+                ) : (
+                  "Ej recenserad"
+                )}
+              
+            </div>
+            <br />
+                      
+            
             <button onClick={() => openBook(book.id)} id="buttonInfo" className="btn btn-primary">Länk bok</button>
+            </div>
+            
         </div>
-        </div>
-        </div>
+        
+        
         ))}
+        
         
       </div>
       

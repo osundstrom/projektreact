@@ -2,20 +2,28 @@
 import { Link, useNavigate } from 'react-router-dom';
 import "../css/Header.css";
 import Cookies from 'js-cookie';
+import { useAllCookies } from '../components/AllCookie'; 
 
 
 
 function Header({ setCategory }: { setCategory: (category: string) => void }) {
   const navigate = useNavigate();
+  const { token, username, logout} = useAllCookies();
+  /*
   const token = Cookies.get("token");
   const usernameLoggedIn = Cookies.get("username");
+  */
 
    
     const Logout = () => {
+      
+      logout();
+      /*
       Cookies.remove("token");
       Cookies.remove("userId");
       Cookies.remove("username");
       Cookies.remove("role");
+      */
       
       navigate("/");
     };
@@ -34,8 +42,8 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
                     <Link to="/">
                         <img src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" onClick={() => CategoryChoose("a")} />
                     </Link>
-                    {usernameLoggedIn ? (
-                  <p onClick={() => navigate("/profil")} className="loggedInP">Inloggad som: <span className="spanLoggedIn">{usernameLoggedIn}</span> </p>
+                    {username ? (
+                  <p onClick={() => navigate("/profil")} className="loggedInP">Inloggad som: <span className="spanLoggedIn">{username}</span> </p>
                     ): (
                       <span className="loggedInP"></span>
                     )}

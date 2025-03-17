@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Book } from "../models/book";
 import { Review } from "../models/review";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 import "../css/OneBook.css"
 import RateBook from "../components/Grade";
+import { useAllCookies } from "../components/AllCookie";
 
 const OneBook = () => {
   
   const { bookId } = useParams<{ bookId: string }>();
   const [book, setBook] = useState<Book | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
+  //const [reviews, setReviews] = useState<Review[]>([]);
   const [userReviewed, setUserReviewed] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<number | null>(null);
@@ -20,8 +21,12 @@ const OneBook = () => {
 
   const navigate = useNavigate();
 
+  const { token, userId, reviews, fetchReviews  } = useAllCookies();
+
+  /*
   const token = Cookies.get("token");
   const userId = Cookies.get("userId");
+  */
 
   useEffect(() => {
 
@@ -38,22 +43,23 @@ const OneBook = () => {
         console.log(data);
         setBook(data);
         document.title = `${data.volumeInfo.title}`; //sätter title
-
+        
         //--------------------------------------fetch recensioner----------------------------------------------------//
-        const reviewsResponse = await fetch(`http://localhost:3000/review/${bookId}`);
+        
+        fetchReviews();
+        /*const reviewsResponse = await fetch(`http://localhost:3000/review/${bookId}`);
         if (reviewsResponse.ok) { //om hittas 
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData);
-        
-          const haveReviewd = reviewsData.find((review: Review) => review.userId === userId);
+        */
+          const haveReviewd = reviews.find((review: Review) => review.userId === userId);
           if(haveReviewd) {
             setUserReviewed(true);
             setReviewId(haveReviewd._id);
             setUserGrade(haveReviewd.grade);
-          }
+          
         } else {
-          setReviews([]); //annars tom
-          console.log("response ej ok, err 2");
+          setUserReviewed(false);;
         }
 
         //--------------------------------------errors osv----------------------------------------------------//
@@ -64,7 +70,7 @@ const OneBook = () => {
     };
 
     fetchBook();
-  }, [bookId]);
+  }, [bookId ]);
 
 
 

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import RateBook from "../components/Grade"
 import "../css/Grade.css"
+import { useAllCookies } from '../components/AllCookie'; 
 
 
 
@@ -11,9 +12,13 @@ const newReview = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    /*
     const token = Cookies.get("token");
     const userId = Cookies.get("userId");
     const username = Cookies.get("username")
+    */
+
+    const { token, userId, username } = useAllCookies();
 
     const [grade, setGrade] = useState<number>(0);
     const [content, setContent] = useState<string>("");

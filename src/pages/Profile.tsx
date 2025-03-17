@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Review } from "../models/review";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import "../css/Profil.css"
 import RateBook from "../components/Grade"
+import { useAllCookies } from "../components/AllCookie";
 
 const Profile = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -13,12 +14,18 @@ const Profile = () => {
   const [searchBox, setSearchBox] = useState<string>("");
   const [searchedReviews, setSearchedReviews] = useState<Review[]>([]);
   
-
+  
   const navigate = useNavigate();
+
+  /*
   const token = Cookies.get("token");
   const userId = Cookies.get("userId");
   const role = Cookies.get("role"); 
   const username = Cookies.get("username"); 
+  */
+
+  const { token, userId, username, role } = useAllCookies();
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
