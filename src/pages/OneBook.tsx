@@ -7,9 +7,13 @@ import "../css/OneBook.css"
 import RateBook from "../components/Grade";
 
 const OneBook = () => {
+  
   const { bookId } = useParams<{ bookId: string }>();
   const [book, setBook] = useState<Book | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [userReviewed, setUserReviewed] = useState<boolean>(false);
+  const [reviewId, setReviewId] = useState<string | null>(null);
+  const [userGrade, setUserGrade] = useState<number | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +21,7 @@ const OneBook = () => {
   const navigate = useNavigate();
 
   const token = Cookies.get("token");
+  const userId = Cookies.get("userId");
 
   useEffect(() => {
 
@@ -39,6 +44,13 @@ const OneBook = () => {
         if (reviewsResponse.ok) { //om hittas 
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData);
+        
+          const haveReviewd = reviewsData.find((review: Review) => review.userId === userId);
+          if(haveReviewd) {
+            setUserReviewed(true);
+            setReviewId(haveReviewd._id);
+            setUserGrade(haveReviewd.grade);
+          }
         } else {
           setReviews([]); //annars tom
           console.log("response ej ok, err 2");
@@ -61,6 +73,20 @@ const OneBook = () => {
     navigate(`/review/${bookId}`, {
       state: {title},
     });
+  };
+
+
+  const AvgGrade = () => {
+    if (reviews.length > 0) {
+      const total = reviews.reduce((x, review) => x + review.grade, 0);
+      const avg = (total / reviews.length);
+    return  avg
+    
+    } else {
+      const avg = 0;
+      return avg;
+    }
+    
   };
   //--------------------------------------return----------------------------------------------------//
   return (
@@ -91,6 +117,24 @@ const OneBook = () => {
                 Författare:
                 {book.volumeInfo.authors?.join(", ")}
               </p>
+<br />
+              {/*avg grade*/}
+              <div className="d-flex justify-content-center">
+                
+                  {reviews.length > 0 ? (
+                    <>
+                      <RateBook grade={Number(AvgGrade())} setGrade={() => {}} />
+                    </>
+                  ) : (
+                    "Ej recenserad"
+                  )}
+                
+              </div>
+              <br />
+
+
+
+
               <p className="card-text">
                 Publicerad:
                 {book.volumeInfo.publishedDate}
@@ -100,11 +144,13 @@ const OneBook = () => {
               </p>
 
               {/* lämna recension, om token*/}
-              {token && (
+              {token && !userReviewed &&(
                 <button className="btn btn-success mt-3" onClick={ReviewButton}>
                   Lämna en recension
                 </button>
               )}
+              {userReviewed &&( 
+              <button onClick={() => navigate(`/edit/${reviewId}`)} className="btn btn-secondary"> Redan recenserad, ditt betyg:  <RateBook grade={Number(userGrade)} setGrade={() => {}} /></button>)}
             </div>
           </div>
         </div>

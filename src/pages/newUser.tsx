@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import "../css/newUser.css";
 
 const NewUser = () => {
-
+  document.title = `Register`;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const createUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -62,7 +62,7 @@ const NewUser = () => {
       <div className="row justify-content-center">
       <div className="col-md-6 col-lg-4">
       <h2>Registrera ny användare</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={createUser}>
         <div className="form-group">
           <label className="form-label" htmlFor="username">Användarnamn:</label>
           <input

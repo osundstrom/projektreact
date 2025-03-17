@@ -38,7 +38,7 @@ const EditReview = () => {
                 if (!response.ok) {
                     throw new Error("error vid hämtning");
                 }
-
+                document.title = `Edit: ${data.title}`;
                 setReview(data);
                 setGrade(data.grade);
                 setContent(data.content);
@@ -46,7 +46,7 @@ const EditReview = () => {
                 setError(error.message);
             }
         };
-
+        
         fetchReview();
     }, [_id, userId, token]);
 

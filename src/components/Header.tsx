@@ -8,11 +8,14 @@ import Cookies from 'js-cookie';
 function Header({ setCategory }: { setCategory: (category: string) => void }) {
   const navigate = useNavigate();
   const token = Cookies.get("token");
+  const usernameLoggedIn = Cookies.get("username");
 
    
     const Logout = () => {
       Cookies.remove("token");
       Cookies.remove("userId");
+      Cookies.remove("username");
+      Cookies.remove("role");
       
       navigate("/");
     };
@@ -31,8 +34,11 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
                     <Link to="/">
                         <img src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" onClick={() => CategoryChoose("a")} />
                     </Link>
-                
-                
+                    {usernameLoggedIn ? (
+                  <p onClick={() => navigate("/profil")} className="loggedInP">Inloggad som: <span className="spanLoggedIn">{usernameLoggedIn}</span> </p>
+                    ): (
+                      <span className="loggedInP"></span>
+                    )}
 
         <nav className="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
   <div className="container-fluid">

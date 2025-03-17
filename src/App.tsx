@@ -15,8 +15,6 @@ import NewUser from "./pages/newUser.tsx";
 
 
 
-
-
 function App() {
   const [category, setCategory] = useState('');
 

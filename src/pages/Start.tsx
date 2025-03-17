@@ -21,11 +21,11 @@ const startPage = ({category}: CategoryHeader) => {
     const booksPerPage = 20;
     const numberPages = Math.ceil(allBooks/booksPerPage);
 
-    const [searchBox, setSearchBox] = useState<string>("")  ; 
+    const [searchBox, setSearchBox] = useState<string>(""); 
     const [searchAuto, setSearchAuto] = useState<string>(""); //måste ha en sökterm för google api, stadard term :)
 
   useEffect(() => {
-    document.title = "Startsida";
+    document.title = `Startsida - ${pageCurrent}`;
     if(!searchAuto){
       setSearchAuto("a");//får ej avra tom
     }
@@ -73,6 +73,7 @@ const startPage = ({category}: CategoryHeader) => {
 //-------------------------PAGINATION-------------------------------------------------------------//
 const changePage = ({ selected } : { selected : number }) => {
   setPageCurrent(selected  + 1);
+  window.scrollTo(0, 0);
 };
 
 const navigate = useNavigate();

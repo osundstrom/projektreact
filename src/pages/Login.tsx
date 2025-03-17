@@ -46,6 +46,7 @@ const Login = () => {
             Cookies.set("username", data.username, {expires: 1});
             Cookies.set("token", data.recivedToken.token, {expires: 1});
             Cookies.set("userId", data.userId, { expires: 1 });
+            Cookies.set("role" , data.role, { expires: 1 });
             console.log(data.token, data.userId)
             navigate("/profil");
         
