@@ -17,14 +17,7 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
    
     const Logout = () => {
       
-      logout();
-      /*
-      Cookies.remove("token");
-      Cookies.remove("userId");
-      Cookies.remove("username");
-      Cookies.remove("role");
-      */
-      
+      logout();  
       navigate("/");
     };
 
@@ -67,8 +60,8 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
           
           <ul className="dropdown-menu">
           <li><a className="dropdown-item" onClick={() => CategoryChoose("Sci-fi")}>Sci-fi</a></li>
-                    <li><a className="dropdown-item" onClick={() => CategoryChoose("Romance")}>Romantik</a></li>
-                    <li><a className="dropdown-item" onClick={() => CategoryChoose("Scary")}>Skräck</a></li>
+          <li><a className="dropdown-item" onClick={() => CategoryChoose("Romance")}>Romantik</a></li>
+          <li><a className="dropdown-item" onClick={() => CategoryChoose("Scary")}>Skräck</a></li>
           </ul>
         </li>
       </ul>

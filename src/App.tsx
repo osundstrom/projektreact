@@ -21,7 +21,7 @@ function App() {
 
   return (
     <>
-    <AuthCookies>
+    <AuthCookies> 
       <Header setCategory={setCategory} />
       <Routes>
         <Route path="/" element={<Start category={category}/>}/>

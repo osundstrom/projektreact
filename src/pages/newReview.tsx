@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-//import Cookies from 'js-cookie';
 import RateBook from "../components/Grade"
 import "../css/Grade.css"
 import { useAllCookies } from '../components/AllCookie'; 
@@ -8,17 +7,12 @@ import { useAllCookies } from '../components/AllCookie';
 
 
 const newReview = () => {
-    const { bookId } = useParams<{ bookId: string }>();
-    const navigate = useNavigate();
-    const location = useLocation();
+    const { bookId } = useParams<{ bookId: string }>(); //id fron url
+    const navigate = useNavigate(); //navigering
+    const location = useLocation(); //info från nuvarande sida
 
-    /*
-    const token = Cookies.get("token");
-    const userId = Cookies.get("userId");
-    const username = Cookies.get("username")
-    */
 
-    const { token, userId, username } = useAllCookies();
+    const { token, userId, username } = useAllCookies(); //hämtar från context
 
     const [grade, setGrade] = useState<number>(0);
     const [content, setContent] = useState<string>("");
@@ -26,19 +20,21 @@ const newReview = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (location.state?.title) {
-          setTitle(location.state.title);  
+        if (location.state?.title) { //hämtar title för boken
+          setTitle(location.state.title);  //sätter title state
         }
       }, [location.state]);
 
-    if (!token || !userId) {
+    if (!token || !userId) { //om ingen token/userId
         return <p className="text-danger">Ogiltig token</p>;
     }
 
+//---------------------------------AddReview------------------------------------------------------------//
+    //lägg till recension
     const AddReview = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (content.trim().length < 20) {
+        if (content.trim().length < 20) { //minst 20 tecken
             setError("Recension måste ha minst 20 tecken");
             return;
         }
@@ -52,6 +48,7 @@ const newReview = () => {
                 grade,
                 content,
             };
+//----------------------------------POST-----------------------------------------------------------//
             const response = await fetch("http://localhost:3000/review", {
                 method: "POST",
                 headers: {
@@ -61,7 +58,7 @@ const newReview = () => {
                 body: JSON.stringify(reviewData),
             });
 
-            if (!response.ok) {
+            if (!response.ok) { //om ej ok
                 throw new Error("fel vid recension");
             }
 
@@ -73,11 +70,11 @@ const newReview = () => {
     };
 
 
-    
+//--------------------------------Return-------------------------------------------------------------//    
 
     return (
         <div className="container" id='fullDivForm'>
-            <h4>Recenserar: {location.state.title}</h4>
+            <h4>Recenserar: {location.state.title}</h4>  {/*Boktitel från location */}
             <hr />
             <h5>Användare: {username}</h5>
             {error && <p className="text-danger">{error}</p>}
@@ -87,7 +84,7 @@ const newReview = () => {
 
                 <div className="mb-3">
                 <label className="form-label">Betyg:</label>
-                <RateBook grade={grade} setGrade={setGrade} />
+                <RateBook grade={grade} setGrade={setGrade} />  {/*Skickar in valt betyg till RateBook*/}
                 </div>
 
                 <div className="mb-3">

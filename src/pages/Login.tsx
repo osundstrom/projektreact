@@ -1,31 +1,35 @@
 import { useState } from "react";
 //import Cookies from "js-cookie"; 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../css/Login.css"
 import {useAllCookies} from "../components/AllCookie"
 
 
 const Login = () => {
 
+    const location = useLocation();
+    const registerMessage = location.state?.message;
+   
+    
     //------------------------States------------------------------------------------//
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
    
-    document.title = "Login";
+    document.title = "Login"; //title
     const navigate = useNavigate();
 
     const {setUser} = useAllCookies();
 
     //------------------------Post/login------------------------------------------------//
     const fetchLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
+        e.preventDefault(); //ej standard
+        setError(null); 
         setLoading(true)
 
          
-        if (!username || !password) {
+        if (!username || !password) { //om ej ifyllt
         setError("Användarnamn och lösenord måste fyllas i.");
         setLoading(false);
         return;
@@ -42,28 +46,31 @@ const Login = () => {
         const data = await response.json();
 
         
-        if (!response.ok) {
+        if (!response.ok) { //om ej ok
             throw new Error(data.error || "ogiltiga uppgifter");
         }else {
+            //lyckad inlogg, spara till context.
             setUser(data.userId, data.recivedToken.token, data.username, data.role)
             
-            /*
-            Cookies.set("username", data.username, {expires: 1});
-            Cookies.set("token", data.recivedToken.token, {expires: 1});
-            Cookies.set("userId", data.userId, { expires: 1 });
-            Cookies.set("role" , data.role, { expires: 1 });
-            console.log(data.token, data.userId)
-            */
             navigate("/profil");
         
         }} catch(error: any) {
             setError( "Felaktiga inloggningsuppgifter");
         }
-        setLoading(false)
+        setLoading(false) //avsluta laddnigsymbol
     }
 
+    //------------------Return-----------------------------------------------------------//
     return (
         <div className="container" id="fullLoginForm">
+
+            {/* laddning */}
+            {loading && (
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+            )}
+
              <div className="row justify-content-center">
              <div className="col-md-6 col-lg-4">
             <h2>Logga in</h2>
@@ -90,12 +97,8 @@ const Login = () => {
                 </div>
                  {/*visa error*/}
                 {error && <p className="text-danger">{error}</p>}
-                {/* laddning */}
-                {loading && (
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                        )}
+                {registerMessage && <div className="alert alert-success">{registerMessage}</div>}
+
                 <br />
                 <div className="mt-3" id="buttonLoggin">
                 <button className="btn btn-primary" type="submit">Logga in</button>

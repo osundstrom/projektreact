@@ -9,16 +9,14 @@ import RateBook from "../components/Grade";
 import { useAllCookies } from '../components/AllCookie'; 
 
 const EditReview = () => {
-    const { _id } = useParams();
-    console.log(_id)
+    const { _id } = useParams(); //id
+    //console.log(_id)
+
     const navigate = useNavigate();
 
-    const { token, userId, username, role } = useAllCookies();
-    /*
-    const token = Cookies.get("token");
-    const userId = Cookies.get("userId");
-    const username = Cookies.get("username");
-    */
+    const { token, userId, username, role } = useAllCookies(); //hämtar alla cookies
+
+//---------------------------------states-----------------------------------------------//
 
     const [review, setReview] = useState<Review | null>(null);
     const [grade, setGrade] = useState(5);
@@ -26,14 +24,15 @@ const EditReview = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-//---------------------------------Fetch/post-----------------------------------------------//
+//---------------------------------Fetch-----------------------------------------------//
         const fetchReview = async () => {
             try {
+                //hömtar recensioner baserat på id
                 const response = await fetch(`http://localhost:3000/review/one/${_id}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, //autensering token
                     },
                 });
 
@@ -42,7 +41,9 @@ const EditReview = () => {
                 if (!response.ok) {
                     throw new Error("error vid hämtning");
                 }
-                document.title = `Edit: ${data.title}`;
+                document.title = `Edit: ${data.title}`; //sätter title
+
+                //states
                 setReview(data);
                 setGrade(data.grade);
                 setContent(data.content);
@@ -52,16 +53,17 @@ const EditReview = () => {
         };
         
         fetchReview();
-    }, [_id, userId, token, navigate]);
+    }, [_id, userId, token, navigate]); //uppdaterar vid 
 
+    //om inte autenserad, 
     if (!token || !userId) {
-        return <p className="text-danger">Ogiltig token</p>;
+        return <p className="text-danger">Ogiltig token/användare</p>;
     }
 
     const updateReview = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (content.trim().length < 20) {
+        if (content.trim().length < 20) {//minst 20 tecken för en recensiopn
             setError("Recension måste ha minst 20 tecken");
             return;
         }
@@ -79,7 +81,7 @@ const EditReview = () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, //med token
                 },
                 body: JSON.stringify(reviewData),
             });
@@ -87,36 +89,39 @@ const EditReview = () => {
             if (!response.ok) {
                 throw new Error("errorFel vid uppdatering");
             }
-            navigate(`/profil`);
+            navigate(`/profil`); //navigering till profil
         } catch (error: any) {
             setError(error.message);
         }
     };
 
+//---------------------------------DELETE-----------------------------------------------//
+
     const deleteReview = async () => {
-        if (!token || !userId || !username || !role) {
+        if (!token || !userId || !username || !role) { //om ej inloggad.
             setError("Ingen token");
             navigate("/login");
             return;
         }
-//---------------------------------DELETE-----------------------------------------------//
+
         try {
+            //fetch baserat på id
             const response = await fetch(`http://localhost:3000/review/${_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, //skickar emd token
                 },
             });
 
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.error || "Kunde ej radera");
+                throw new Error(data.error || "Kunde ej radera"); //felmeddelande
             }
 
             
             
-            navigate("/Profil");
+            navigate("/Profil"); //navigering
         } catch (error: any) {
             setError(error.message);
         }
@@ -127,9 +132,8 @@ const EditReview = () => {
         <div className="container">
             <div className="row justify-content-center">
             <div className="col">
-            {error && <p className="text-danger">{error}</p>}
 
-            {review ? (
+            {review ? (  /*om recension finns*/
                 <>
                 <h5>Recension av: {review.title}</h5>
                 <form onSubmit={updateReview}>
@@ -144,6 +148,7 @@ const EditReview = () => {
                     </div>
 
                     <div className="mb-3">
+                {/* Betyg(skickas till Ratebook*/}
                 <label className="form-label">Betyg:</label>
                 <RateBook grade={grade} setGrade={setGrade} />
                 </div>
@@ -156,25 +161,31 @@ const EditReview = () => {
                             onChange={(e) => setContent(e.target.value)}
                             required
                         />
+                        {/*Error meddelande*/}
+                        {error && <p className="text-danger">{error}</p>}
                     </div>
-                    
+                    {/*Knapp för spara*/}
                     <button id='buttonSave' type="submit" className="btn btn-success">
                     <FontAwesomeIcon icon={faFloppyDisk} /> 
                         </button>
                         
                 </form>
                 
+                {/*Knapp för radera*/}
             <button id="buttonDelete" onClick={deleteReview} className="btn btn-danger mt-3">
                 <FontAwesomeIcon icon={faTrashCan} /> 
             </button>
             
             
+            
             </>
         ) : (
+            // Om ingen recension hittas
             <p>Hittar ej recension</p>
         )}
         
         </div>
+        
         </div>
         </div>
     );

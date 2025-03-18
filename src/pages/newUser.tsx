@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import "../css/newUser.css";
 
 const NewUser = () => {
-  document.title = `Register`;
+  document.title = `Register`; //title
 
+//--------------states---------------------------------------------------------//
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+//--------------skapa användare---------------------------------------------------------//
   const createUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -47,15 +49,17 @@ const NewUser = () => {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok) { //om ej ok
         throw new Error(data.error || "Fel vid registrering");
       }
 
-      navigate("/login"); 
+      navigate("/login", { state: { message: "Användare skapad, nu kan du logga in" } });  //navigering
     } catch (error: any) {
-      setError(error.message);
+      setError("Användare finns redan");
     }
   };
+
+//--------------return---------------------------------------------------------//
 
   return (
     <div className="container" id="fullNewUser">

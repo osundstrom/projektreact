@@ -5,31 +5,34 @@ import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
 import RateBook from "../components/Grade";
 import { Review } from "../models/review";
+import { useAllCookies } from "../components/AllCookie";
 
 
 interface CategoryHeader {
-  category: string; 
+  category: string; //prop från header
 }
 
 
 const startPage = ({category}: CategoryHeader) => { 
- 
-
-    const [books, setBooks] = useState<Book[]>([]);
+  
+  const { setBooks, setAvgGrades } = useAllCookies();
+//--------------------states----------------------------------------------------------------//
+    const [books, setBooksLocal] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [pageCurrent, setPageCurrent] = useState<number>(1); 
     const [allBooks, setAllBooks] = useState<number>(0);
-    const [avgGrades, setAvgGrades] = useState<Map<string, number>>(new Map());
+    const [avgGrades, setAvgGradesLocal] = useState<Map<string, number>>(new Map());
     
-    const booksPerPage = 20;
-    const numberPages = Math.ceil(allBooks/booksPerPage);
+    const booksPerPage = 20; //antal böcker per sida
+    const numberPages = Math.ceil(allBooks/booksPerPage); //antalet sidor, ?? ger olika??
 
     const [searchBox, setSearchBox] = useState<string>(""); 
     const [searchAuto, setSearchAuto] = useState<string>(""); //måste ha en sökterm för google api, stadard term :)
 
   useEffect(() => {
-    document.title = `Startsida - ${pageCurrent}`;
+    document.title = `Startsida - ${pageCurrent}`; //title
+
     if(!searchAuto){
       setSearchAuto("a");//får ej avra tom
     }
@@ -39,28 +42,31 @@ const startPage = ({category}: CategoryHeader) => {
   }, [pageCurrent, searchAuto]);
 
   useEffect(() => {
-    setSearchAuto((category)|| "a");//får ej avra tom
-  }, [category]);
+    setSearchAuto((category)|| "a");//får ej vara tom
+  }, [category]);//vid ändrign av kategori
 
   const fetchBooks = async () => {
     setLoading(true);
   try {
-    const startPage = (pageCurrent - 1) * 20;
+    const startPage = (pageCurrent - 1) * 20; //startsida
     console.log(startPage);
+
+  //----------------------------------Google api, visas på sökterm och hur många per sida------------------------------------------------------//
     const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchAuto}&orderBy=newest&maxResults=${booksPerPage}&startIndex=${startPage}`);
     
-    if (!response.ok) {
+    if (!response.ok) { //om ej ok
         throw new Error("fel vid hämtning");
       }
 
     const data = await response.json();
     if (data.items && data.items.length > 0) {
-      setBooks(data.items);
-      setAllBooks(data.totalItems);
+      setBooksLocal(data.items); //sätt böcker
+      setAllBooks(data.totalItems); //totala antalet böcker
+      setBooks(data.items)
 
     console.log(data.totalItems);
 
-    }else{
+    }else{ //om inget hittas
       setBooks([]);
       setAllBooks(0);
       setError("Inga böcker hittades");
@@ -68,26 +74,31 @@ const startPage = ({category}: CategoryHeader) => {
 
     //--------------------------------------fetch recensioner (avg)----------------------------------------------------//
       
-    const allAvgGrades: Map<string, number> = new Map();
+    const allAvgGrades: Map<string, number> = new Map(); //ny för alla avgGrades, 
 
-    await Promise.all(data.items.map(async (book: Book) => {
+    // Hämta recensioner och beräkna genomsnittligt betyg repsektive bok
+    //promise väntar på samtliga
+    await Promise.all(data.items.map(async (book: Book) => { 
+      
+      setLoading(true); 
       const reviews = await fetch(`http://localhost:3000/review/${book.id}`);
 
-      if (reviews.ok) {  
+      if (reviews.ok) {   //om ok 
         //console.error(reviews)
         const reviewsData = await reviews.json();
 
       
-      if (reviewsData.length > 0) { //om recensioner finns
+      if (reviewsData.length > 0) { //om recensioner finns¨
+        //räkna ut medelvärde
         const total = reviewsData.reduce((x: number, review: Review) => x + review.grade, 0);
         const gradeAvg = (total / reviewsData.length);
 
-        allAvgGrades.set(book.id, gradeAvg); 
+        allAvgGrades.set(book.id, gradeAvg);  //sätt betyg baserat på bookId
 
       } 
       else if(reviewsData.length === 0){ //om inga recensioner
 
-        allAvgGrades.set(book.id, 0); 
+        allAvgGrades.set(book.id, 0); //betyg 0.
         
       }}
       
@@ -96,12 +107,13 @@ const startPage = ({category}: CategoryHeader) => {
       }
     }));
 
+    setAvgGradesLocal(allAvgGrades)
     setAvgGrades(allAvgGrades);
   
-    setLoading(false);
+    setLoading(false); //slutar ladda
 
   } catch (error) {
-    console.error("Error vid hämtning:", error);
+    //console.error("Error vid hämtning:", error);
     setError("fel vid hämtning av böcker");
     setLoading(false);
   }
@@ -109,9 +121,11 @@ const startPage = ({category}: CategoryHeader) => {
 
 //-------------------------PAGINATION-------------------------------------------------------------//
 const changePage = ({ selected } : { selected : number }) => {
-  setPageCurrent(selected  + 1);
-  window.scrollTo(0, 0);
+  setPageCurrent(selected  + 1); // nästa sida, +1 på sidan
+  window.scrollTo(0, 0); //till toppen
 };
+
+//-------------------------openBook-------------------------------------------------------------//
 
 const navigate = useNavigate();
 //Skicka till sida för enskild boken
@@ -128,7 +142,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
   setPageCurrent(1);
 };
 
-//-------------------------avg fetch-------------------------------------------------------------//
+//-------------------------avg-------------------------------------------------------------//
 
 
 
@@ -165,8 +179,8 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
             <h5 className="card-title">{book.volumeInfo.title}</h5>
             <p className="card-text">{book.volumeInfo.authors?.join(", ")}</p>
               <br />
-              {/*avg*/}
-            <p>{<RateBook grade={avgGrades.get(book.id) ?? 0} setGrade={() => {}} />}</p>
+              {/*avg betyg, skickas in i ratebook*/}
+            <p>{<RateBook grade={avgGrades.get(book.id) ?? 0} setGrade={() => {}} />}</p> 
             </div>
             <br />
                       
@@ -182,7 +196,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         
       </div>
       
-    {/*pagnering*/}
+    {/*pagnering, react paganate och bootstrap*/}
     {allBooks > 0 &&(
     <ReactPaginate
         previousLabel={"Tidigare"}
