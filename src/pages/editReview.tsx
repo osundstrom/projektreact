@@ -52,7 +52,7 @@ const EditReview = () => {
         };
         
         fetchReview();
-    }, [_id, userId, token]);
+    }, [_id, userId, token, navigate]);
 
     if (!token || !userId) {
         return <p className="text-danger">Ogiltig token</p>;
@@ -87,7 +87,6 @@ const EditReview = () => {
             if (!response.ok) {
                 throw new Error("errorFel vid uppdatering");
             }
-
             navigate(`/profil`);
         } catch (error: any) {
             setError(error.message);
@@ -115,6 +114,8 @@ const EditReview = () => {
                 throw new Error(data.error || "Kunde ej radera");
             }
 
+            
+            
             navigate("/Profil");
         } catch (error: any) {
             setError(error.message);

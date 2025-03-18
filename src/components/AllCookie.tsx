@@ -1,7 +1,6 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { Review } from '../models/review';
 
 
 
@@ -11,10 +10,8 @@ interface AllCookiesInterface {
   token: string;
   username: string;
   role: string;
-  reviews: Review[];
   setUser: (userId: string, token: string, username: string, role: string) => void;
   logout: () => void;
-  fetchReviews: () => void;
 }
 
 const AllCookies = createContext<AllCookiesInterface | undefined>(undefined);
@@ -26,7 +23,8 @@ const [userId, setUserId] = useState<string>(Cookies.get("userId") || "");
 const [token, setToken] = useState<string>(Cookies.get("token") || "");
 const [username, setUsername] = useState<string>(Cookies.get("username") || "");
 const [role, setRole] = useState<string>(Cookies.get("role") || "");
-const [reviews, setReviews] = useState<Review[]>([]);
+
+
 
    
    useEffect(() => {
@@ -34,31 +32,11 @@ const [reviews, setReviews] = useState<Review[]>([]);
     setToken(Cookies.get("token") || "");
     setUsername(Cookies.get("username") || "");
     setRole(Cookies.get("role") || "");
-    fetchReviews();
-  }, [reviews]); 
+  }, [userId, token, ]); 
 
 //-----------------------------------------------------------------------------------------------------//
 
-const fetchReviews = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/reviews", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}`: "",
-        },
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error("kunde ej hämta recensioner");
-      }
-
-      setReviews(data); 
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
-  //---------------------------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------------------------------//
 
   
   const setUser = (userId: string , token: string, username: string, role: string) => {
@@ -92,7 +70,7 @@ const fetchReviews = async () => {
   };
 
   return (
-    <AllCookies.Provider value={{ userId: userId, token: token, username: username, role: role, setUser, logout, reviews: reviews, fetchReviews }}>
+    <AllCookies.Provider value={{ userId: userId, token: token, username: username, role: role, setUser, logout }}>
       {children}
     </AllCookies.Provider>
   );
