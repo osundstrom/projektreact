@@ -71,7 +71,7 @@ const Profile = () => {
     };
 
     fetchReviews();
-  }, [userId, token, navigate, role]);
+  }, [userId, username, token, navigate, role]);
 
 //---------------------------------------------------------------------------//
 const searchForm = (e: React.ChangeEvent<HTMLInputElement>) => {

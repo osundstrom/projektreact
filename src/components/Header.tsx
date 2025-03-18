@@ -1,7 +1,7 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import "../css/Header.css";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import { useAllCookies } from '../components/AllCookie'; 
 
 

@@ -13,7 +13,7 @@ const EditReview = () => {
     console.log(_id)
     const navigate = useNavigate();
 
-    const { token, userId, username } = useAllCookies();
+    const { token, userId, username, role } = useAllCookies();
     /*
     const token = Cookies.get("token");
     const userId = Cookies.get("userId");
@@ -94,7 +94,7 @@ const EditReview = () => {
     };
 
     const deleteReview = async () => {
-        if (!token) {
+        if (!token || !userId || !username || !role) {
             setError("Ingen token");
             navigate("/login");
             return;

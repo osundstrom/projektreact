@@ -3,6 +3,8 @@ import "../css/Start.css";
 import ReactPaginate from "react-paginate";
 import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
+import RateBook from "../components/Grade";
+import { Review } from "../models/review";
 
 
 interface CategoryHeader {
@@ -18,6 +20,7 @@ const startPage = ({category}: CategoryHeader) => {
     const [error, setError] = useState<string | null>(null);
     const [pageCurrent, setPageCurrent] = useState<number>(1); 
     const [allBooks, setAllBooks] = useState<number>(0);
+    const [avgGrades, setAvgGrades] = useState<Map<string, number>>(new Map());
     
     const booksPerPage = 20;
     const numberPages = Math.ceil(allBooks/booksPerPage);
@@ -62,7 +65,39 @@ const startPage = ({category}: CategoryHeader) => {
       setAllBooks(0);
       setError("Inga böcker hittades");
     }
-    
+
+    //--------------------------------------fetch recensioner (avg)----------------------------------------------------//
+      
+    const allAvgGrades: Map<string, number> = new Map();
+
+    await Promise.all(data.items.map(async (book: Book) => {
+      const reviews = await fetch(`http://localhost:3000/review/${book.id}`);
+
+      if (reviews.ok) {  
+        //console.error(reviews)
+        const reviewsData = await reviews.json();
+
+      
+      if (reviewsData.length > 0) { //om recensioner finns
+        const total = reviewsData.reduce((x: number, review: Review) => x + review.grade, 0);
+        const gradeAvg = (total / reviewsData.length);
+
+        allAvgGrades.set(book.id, gradeAvg); 
+
+      } 
+      else if(reviewsData.length === 0){ //om inga recensioner
+
+        allAvgGrades.set(book.id, 0); 
+        
+      }}
+      
+      else{ //om ej ok respones, sätter vi till 0, alltså inga recensioner.
+        allAvgGrades.set(book.id, 0); 
+      }
+    }));
+
+    setAvgGrades(allAvgGrades);
+  
     setLoading(false);
 
   } catch (error) {
@@ -93,7 +128,8 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
   setPageCurrent(1);
 };
 
-//-------------------------avg-------------------------------------------------------------//
+//-------------------------avg fetch-------------------------------------------------------------//
+
 
 
 //-------------------------RETURN-------------------------------------------------------------//
@@ -128,7 +164,9 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         <div className="card-body">
             <h5 className="card-title">{book.volumeInfo.title}</h5>
             <p className="card-text">{book.volumeInfo.authors?.join(", ")}</p>
-               
+              <br />
+              {/*avg*/}
+            <p>{<RateBook grade={avgGrades.get(book.id) ?? 0} setGrade={() => {}} />}</p>
             </div>
             <br />
                       

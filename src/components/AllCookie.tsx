@@ -2,8 +2,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-
-
 //interface
 interface AllCookiesInterface {
   userId: string;
@@ -14,7 +12,7 @@ interface AllCookiesInterface {
   logout: () => void;
 }
 
-const AllCookies = createContext<AllCookiesInterface | undefined>(undefined);
+const AllCookies = createContext<AllCookiesInterface | null>(null);
 
 
 export const AuthCookies: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -23,16 +21,6 @@ const [userId, setUserId] = useState<string>(Cookies.get("userId") || "");
 const [token, setToken] = useState<string>(Cookies.get("token") || "");
 const [username, setUsername] = useState<string>(Cookies.get("username") || "");
 const [role, setRole] = useState<string>(Cookies.get("role") || "");
-
-
-
-   
-   useEffect(() => {
-    setUserId(Cookies.get("userId") || "");
-    setToken(Cookies.get("token") || "");
-    setUsername(Cookies.get("username") || "");
-    setRole(Cookies.get("role") || "");
-  }, [userId, token, ]); 
 
 //-----------------------------------------------------------------------------------------------------//
 
@@ -67,6 +55,7 @@ const [role, setRole] = useState<string>(Cookies.get("role") || "");
     setToken("");
     setUsername("");
     setRole("");
+   
   };
 
   return (
@@ -80,7 +69,7 @@ const [role, setRole] = useState<string>(Cookies.get("role") || "");
 export const useAllCookies = (): AllCookiesInterface => {
   const context = useContext(AllCookies);
   if (!context) {
-    throw new Error("Error, context undifined");
+    throw new Error("Error, context null");
   }
   return context;
 };

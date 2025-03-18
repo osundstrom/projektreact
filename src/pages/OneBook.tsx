@@ -17,7 +17,7 @@ const OneBook = () => {
   const [userReviewed, setUserReviewed] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<number | null>(null);
-  
+  const [avgGrade, setAvgGrade] = useState<number>(0);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +76,18 @@ const OneBook = () => {
     fetchBook();
   }, [bookId  ]);
 
+//--------------------------------------Avg grade----------------------------------------------------//
+  useEffect(() => {
+    if (reviews.length > 0) {
+      const total = reviews.reduce((sum, review) => sum + review.grade, 0);
+      setAvgGrade(total / reviews.length);
+    } else {
+      setAvgGrade(0);
+    }
+  }, [reviews]); 
 
+
+//--------------------------------------Review button----------------------------------------------------//
 
   const ReviewButton = () => {
     const title = book?.volumeInfo.title;
@@ -86,19 +97,6 @@ const OneBook = () => {
     });
   };
 
-
-  const AvgGrade = () => {
-    if (reviews.length > 0) {
-      const total = reviews.reduce((x, review) => x + review.grade, 0);
-      const avg = (total / reviews.length);
-    return  avg
-    
-    } else {
-      const avg = 0;
-      return avg;
-    }
-    
-  };
   //--------------------------------------return----------------------------------------------------//
   return (
     <div className="container text-center" id="fullOneBook">
@@ -134,7 +132,7 @@ const OneBook = () => {
                 
                   {reviews.length > 0 ? (
                     <>
-                      <RateBook grade={Number(AvgGrade())} setGrade={() => {}} />
+                      <RateBook grade={avgGrade} setGrade={() => {}} />
                     </>
                   ) : (
                     "Ej recenserad"
