@@ -9,11 +9,7 @@ import { useAllCookies } from '../components/AllCookie';
 function Header({ setCategory }: { setCategory: (category: string) => void }) {
   const navigate = useNavigate();
   const { token, username, logout} = useAllCookies();
-  /*
-  const token = Cookies.get("token");
-  const usernameLoggedIn = Cookies.get("username");
-  */
-
+  
    
     const Logout = () => {
       

@@ -13,6 +13,7 @@ import NewReview from "./pages/newReview.tsx";
 import EditReview from "./pages/editReview.tsx";
 import NewUser from "./pages/newUser.tsx";
 import {AuthCookies} from "./components/AllCookie.tsx"
+import { BooksList } from "./components/Allbooks.tsx";
 
 
 function App() {
@@ -23,9 +24,12 @@ function App() {
     <>
     <AuthCookies> 
       <Header setCategory={setCategory} />
+      
       <Routes>
-        <Route path="/" element={<Start category={category}/>}/>
-        <Route path="/books/:bookId" element={<OneBook />} />
+        
+        <Route path="/" element={<BooksList><Start category={category}/></BooksList>}/>
+        <Route path="/books/:bookId" element={<BooksList><OneBook /></BooksList>} />
+        
         <Route path="/login" element={<Login/>}/>
         <Route path="/profil" element={<Profile/>}/>
         <Route path="/review/:bookId" element={<NewReview />} />
@@ -33,6 +37,7 @@ function App() {
         <Route path="/register" element={<NewUser />} />
       </Routes>
       <Footer />
+      
       </AuthCookies>
     </>
     

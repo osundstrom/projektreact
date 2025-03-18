@@ -133,12 +133,17 @@ const searchForm = (e: React.ChangeEvent<HTMLInputElement>) => {
               )}
 
               {/*Redigera*/}
-              <button
+              
+                <button
                 onClick={() => navigate(`/edit/${review._id}`)}
                 className="btn btn-warning"
               >
                 <FontAwesomeIcon icon={faPenToSquare} />
               </button>
+              
+              
+              
+              
               
             </div>
           ))

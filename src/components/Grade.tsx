@@ -9,12 +9,12 @@ const RateBook = ({ grade, setGrade }: { grade: number; setGrade: (value: number
      return (
 
         /*skapar sjörnoir (fontawesome)baserat på betyg, */ 
-        <div className="starBook">
+        <span className="starBook">
             {gradearr.map((x) => ( 
             <FontAwesomeIcon key={x} icon={faStar} className={x <= grade ? "starYes" : "starNot"} 
             onClick={() => setGrade(x)}/>//uppdaterar värde med klick
             ))}
-        </div>
+        </span>
 
 
     );

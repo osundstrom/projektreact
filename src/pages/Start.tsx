@@ -5,7 +5,8 @@ import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
 import RateBook from "../components/Grade";
 import { Review } from "../models/review";
-import { useAllCookies } from "../components/AllCookie";
+//import { useAllCookies } from "../components/AllCookie";
+import {useAllBooks} from "../components/Allbooks";
 
 
 interface CategoryHeader {
@@ -15,7 +16,7 @@ interface CategoryHeader {
 
 const startPage = ({category}: CategoryHeader) => { 
   
-  const { setBooks, setAvgGrades } = useAllCookies();
+  const { setBooks, setAvgGrades } = useAllBooks();
 //--------------------states----------------------------------------------------------------//
     const [books, setBooksLocal] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(false);

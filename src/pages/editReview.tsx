@@ -53,7 +53,7 @@ const EditReview = () => {
         };
         
         fetchReview();
-    }, [_id, userId, token, navigate]); //uppdaterar vid 
+    }, [_id, token, navigate]); //uppdaterar vid 
 
     //om inte autenserad, 
     if (!token || !userId) {
@@ -70,8 +70,8 @@ const EditReview = () => {
 
         try {
             const reviewData = {
-                userId,
-                username,
+                userId: review?.userId,
+                username: review?.username,
                 grade,
                 content,
             };
@@ -142,15 +142,15 @@ const EditReview = () => {
                         <input
                             type="text"
                             className="form-control"
-                            value={username}
-                            readOnly
+                            value={review.username}
+                            disabled
                         />
                     </div>
 
                     <div className="mb-3">
                 {/* Betyg(skickas till Ratebook*/}
                 <label className="form-label">Betyg:</label>
-                <RateBook grade={grade} setGrade={setGrade} />
+                <RateBook grade={grade} setGrade={review.username === username ? setGrade : () => {}} />
                 </div>
 
                     <div className="mb-3">
@@ -160,6 +160,7 @@ const EditReview = () => {
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             required
+                            disabled={review.username !== username}
                         />
                         {/*Error meddelande*/}
                         {error && <p className="text-danger">{error}</p>}

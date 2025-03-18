@@ -6,6 +6,7 @@ import { Review } from "../models/review";
 import "../css/OneBook.css"
 import RateBook from "../components/Grade";
 import { useAllCookies } from "../components/AllCookie";
+import { useAllBooks } from "../components/Allbooks";
 
 const OneBook = () => {
 
@@ -26,8 +27,9 @@ const OneBook = () => {
 
   const navigate = useNavigate(); //navigate
 
-  const { token, userId, avgGrades, books } = useAllCookies();//från context
+  const { token, userId, } = useAllCookies();//från context
 
+  const {avgGrades, books} = useAllBooks();
   const avgGrade = avgGrades.get(bookId || "");
   const book = books.find((b) => b.id === bookId) || null; 
   useEffect(() => {

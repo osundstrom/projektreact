@@ -7,7 +7,7 @@ import { useAllCookies } from '../components/AllCookie';
 
 
 const newReview = () => {
-    const { bookId } = useParams<{ bookId: string }>(); //id fron url
+    const { bookId } = useParams<{ bookId: string }>(); //id från url
     const navigate = useNavigate(); //navigering
     const location = useLocation(); //info från nuvarande sida
 
@@ -62,7 +62,7 @@ const newReview = () => {
                 throw new Error("fel vid recension");
             }
 
-            navigate(`/books/${bookId}`);
+            navigate(`/profil`);
 
         } catch (error: any) {
             setError(error.message);
