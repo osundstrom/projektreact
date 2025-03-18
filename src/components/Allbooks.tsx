@@ -23,7 +23,7 @@ export const BooksList: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-//hook for useAllbooks
+//hook för useAllbooks
 export const useAllBooks = (): AllbooksInterface => {
   const context = useContext(AllBooks);
   if (!context) {

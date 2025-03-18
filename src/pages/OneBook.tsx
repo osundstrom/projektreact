@@ -127,10 +127,9 @@ const OneBook = () => {
           <div className="col-12 col-md-8">
             <div className="card-body text-left">
               <h5 className="card-title">{book.volumeInfo.title}</h5>
-              <p className="card-text">
-                Författare:
-                {book.volumeInfo.authors?.join(", ")}
-              </p>
+              <div className="card-text">
+                <p><b>Författare:</b> {book.volumeInfo.authors?.join(", ")}</p>
+                </div>
               <br />
               {/*avg grade*/}
               <div className="d-flex justify-content-center">
@@ -140,7 +139,7 @@ const OneBook = () => {
                     <RateBook grade={avgGrade ?? 0} setGrade={() => { }} />
                   </>
                 ) : (
-                  "Ej recenserad"
+                  <RateBook grade={0} setGrade={() => { }} />
                 )}
 
               </div>
@@ -149,13 +148,25 @@ const OneBook = () => {
 
 
 
-              <p className="card-text">
-                Publicerad:
-                {book.volumeInfo.publishedDate}
-              </p>
-              <p className="card-text">
-                Antal sidor: {book.volumeInfo.pageCount}
-              </p>
+              <div className="card-text">
+                <p><b>Publicerad:</b> {book.volumeInfo.publishedDate}</p>
+              </div>
+
+              <div className="card-text">
+                <p><b>Antal sidor:</b>  {book.volumeInfo.pageCount}</p>
+              </div>
+
+              <div className="card-text">
+                <p><b>Språk:</b>  {book.volumeInfo.language}</p> 
+              </div>
+
+              <div className="card-text">
+                <p><b>Genre:</b> {book.volumeInfo.categories}</p>
+              </div>
+
+              <div className="card-text">
+                <p><b>Typ:</b>  {book.volumeInfo.printType}</p>
+              </div>
 
               {/* lämna recension, om token*/}
               {token && !userReviewed && (
