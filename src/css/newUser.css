@@ -1,7 +1,29 @@
 #buttonNewUser{
     margin-top: 2vh;
+    white-space: nowrap;
+}
+#buttonReturn{
+    margin-top: 4vh;
+    padding: 0;
+}
+
+#buttonReturn a{
+    color: black; 
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#buttonReturn a:hover{
+    text-decoration: underline;
 }
 
 #fullNewUser{
     margin-top: 4vh;
+}
+
+.divButtons{
+    display:flex;
+    align-items: center;
+    gap: 3em;
+    
 }

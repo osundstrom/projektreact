@@ -9,6 +9,10 @@
     
 }
 
+.headerImg{
+    margin-top: 1vh;
+}
+
 .spanLoggedIn{
     margin-left: 3px;
     font-weight: 600;

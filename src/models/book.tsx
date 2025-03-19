@@ -1,10 +1,11 @@
 
-export interface Book {
+export interface Book { //kopierad från consol chrome
     id: string;
     volumeInfo: {
       title: string;
       subtitle: string;
       authors: string[];
+      description: string[],
       publishedDate?: string;
       industryIdentifiers: {
         type: string;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 //import { Book } from "../models/book";
 import { Review } from "../models/review";
 //import Cookies from "js-cookie";
@@ -37,18 +37,6 @@ const OneBook = () => {
     const fetchBook = async () => {
       setLoading(true);
       setError(null);
-      /*
-      try {
-        
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
-        if (!response.ok) {
-          throw new Error("Kunde ej hämta boken, err 1");
-        }
-        const data = await response.json();
-        console.log(data);
-        setBook(data);
-        document.title = `${data.volumeInfo.title}`; //sätter title
-        */
         //--------------------------------------fetch recensioner----------------------------------------------------//
         try {
 
@@ -80,17 +68,6 @@ const OneBook = () => {
     fetchBook();
   }, [bookId]); //kör om bookId ändras
 
-  //--------------------------------------Avg grade----------------------------------------------------//
-  /*useEffect(() => {
-    if (reviews.length > 0) { //om recensioner finns
-      const total = reviews.reduce((sum: number, review: Review) => sum + review.grade, 0); //summrera alla betyg
-      setAvgGrade(total / reviews.length); //räknar ut medel
-    } else {
-      setAvgGrade(0); //om inga recensioner finns
-    }
-  }, [reviews]); //när reviews ändras
-*/
-
   //--------------------------------------Review button----------------------------------------------------//
 
   const ReviewButton = () => {
@@ -105,6 +82,10 @@ const OneBook = () => {
   return (
     <div className="container text-center" id="fullOneBook">
 
+ <div id="btnReturn" className="container d-flex">
+  <Link className="btn btn-secondary"  to="/">Tillbaka</Link>
+ </div>
+      
       {/* Error Message */}
       {error && <p className="text-danger">{error}</p>}
 
@@ -115,10 +96,13 @@ const OneBook = () => {
         </div>
       )}
 
+     
+      
+
       {book && book.volumeInfo && (
         <div className="row">
           <div className="col-12 col-md-4">
-
+          
             <img
               src={book.volumeInfo.imageLinks.thumbnail} //problem vid hämtning xlarge, large? kolla senare
               alt={book.volumeInfo.title}
@@ -126,10 +110,13 @@ const OneBook = () => {
           </div>
           <div className="col-12 col-md-8">
             <div className="card-body text-left">
-              <h5 className="card-title">{book.volumeInfo.title}</h5>
+              <h5 id="h5Title" className="card-title"><u>{book.volumeInfo.title}</u></h5>
               <div className="card-text">
-                <p><b>Författare:</b> {book.volumeInfo.authors?.join(", ")}</p>
+              <p>{book.volumeInfo.description}</p>
+              <hr />
+              <p><b>Författare:</b> {book.volumeInfo.authors?.length > 0 ? book.volumeInfo.authors.join(", ") : "Ej angiven"}</p>
                 </div>
+                
               <br />
               {/*avg grade*/}
               <div className="d-flex justify-content-center">
@@ -146,8 +133,6 @@ const OneBook = () => {
               <br />
 
 
-
-
               <div className="card-text">
                 <p><b>Publicerad:</b> {book.volumeInfo.publishedDate}</p>
               </div>
@@ -158,10 +143,6 @@ const OneBook = () => {
 
               <div className="card-text">
                 <p><b>Språk:</b>  {book.volumeInfo.language}</p> 
-              </div>
-
-              <div className="card-text">
-                <p><b>Genre:</b> {book.volumeInfo.categories}</p>
               </div>
 
               <div className="card-text">

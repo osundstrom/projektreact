@@ -173,7 +173,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         
         {/*Böcker*/}
         {books.map((book: Book, index) => (
-        <div className="col-12 col-md-3 mb-4" key={`${book.id}-${index}`}>
+        <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={`${book.id}-${index}`}>
         <div className="card oneCard">
             <img src={book.volumeInfo.imageLinks?.smallThumbnail} className="card-img-top" alt={book.volumeInfo.title} />
         <div className="card-body">
@@ -186,7 +186,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
             <br />
                       
             
-            <button onClick={() => openBook(book.id)} id="buttonInfo" className="btn btn-primary">Länk bok</button>
+            <button onClick={() => openBook(book.id)} id="buttonInfo" className="btn btn-primary">Läs mer</button>
             </div>
             
         </div>

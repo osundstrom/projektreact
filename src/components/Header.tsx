@@ -29,8 +29,9 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
                 <div className="container-fluid">
                 
                     <Link to="/">
-                        <img src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" onClick={() => CategoryChoose("a")} />
+                        <img className='headerImg' src="/bokkollen.png" alt="Logo" width="35%" height="fit-content" onClick={() => CategoryChoose("a")} />
                     </Link>
+
                     {username ? (
                   <p onClick={() => navigate("/profil")} className="loggedInP">Inloggad som: <span className="spanLoggedIn">{username}</span> </p>
                     ): (
@@ -54,10 +55,14 @@ function Header({ setCategory }: { setCategory: (category: string) => void }) {
             Kategorier
           </a>
           
-          <ul className="dropdown-menu">
+          {/*Försökte hämta dynamisk via books i Allbooks context, funmkar ej då de finns så många o de ändras konstant vid sökning osv.*/}
+          <ul className="dropdown-menu"> 
           <li><a className="dropdown-item" onClick={() => CategoryChoose("Sci-fi")}>Sci-fi</a></li>
           <li><a className="dropdown-item" onClick={() => CategoryChoose("Romance")}>Romantik</a></li>
           <li><a className="dropdown-item" onClick={() => CategoryChoose("Scary")}>Skräck</a></li>
+          <li><a className="dropdown-item" onClick={() => CategoryChoose("Biography")}>Biografi</a></li>
+          <li><a className="dropdown-item" onClick={() => CategoryChoose("History")}>Historia</a></li>
+          <li><a className="dropdown-item" onClick={() => CategoryChoose("Sport")}>Sport</a></li>
           </ul>
         </li>
       </ul>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../css/newUser.css";
 
 const NewUser = () => {
@@ -90,7 +90,11 @@ const NewUser = () => {
 
         {error && <p className="error-text">{error}</p>}
 
+        <div className="divButtons">
         <button id="buttonNewUser" type="submit" className="btn btn-primary">Skapa Konto</button>
+        <p id="buttonReturn" className="container">Har du ett konto, <Link id="linkReturn" to="/login"  type="submit" > logga in</Link></p>
+        </div>
+        
       </form>
     </div>
     </div>

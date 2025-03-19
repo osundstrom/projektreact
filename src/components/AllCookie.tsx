@@ -11,10 +11,7 @@ interface AllCookiesInterface {
   role: string;
   setUser: (userId: string, token: string, username: string, role: string) => void; //funktion för säatt användare
   logout: () => void; //funktion för utlogg
-  //setBooks: (books: Book[]) => void;
-  //setAvgGrades: (avgGrades: Map<string, number>) => void;
-  //books: Book[]; 
-  //avgGrades: Map<string, number>; 
+ 
 }
 
 //skapar context och komponenet för att dela alla cookies 
@@ -27,8 +24,7 @@ const [token, setToken] = useState<string>(Cookies.get("token") || "");
 const [username, setUsername] = useState<string>(Cookies.get("username") || "");
 const [role, setRole] = useState<string>(Cookies.get("role") || "");
 
-//const [books, setBooks] = useState<Book[]>([]); 
-//const [avgGrades, setAvgGrades] = useState<Map<string, number>>(new Map()); 
+
 
 
 //------------------------------setUser---------------------------------------------------------------------//
