@@ -196,7 +196,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         
         
       </div>
-      
+      <div id="pageManage">
     {/*pagnering, react paganate och bootstrap*/}
     {allBooks > 0 &&(
     <ReactPaginate
@@ -220,6 +220,7 @@ const searchForm = (e: React.FormEvent<HTMLFormElement>) => {
         renderOnZeroPageCount={null}
       />
     )}
+    </div>
     </div>
     
     </>
