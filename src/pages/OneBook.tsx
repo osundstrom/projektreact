@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 //import { Book } from "../models/book";
 import { Review } from "../models/review";
 //import Cookies from "js-cookie";
-import "../css/onebook.css"
+import "../css/Onebook.css"
 import RateBook from "../components/Grade";
 import { useAllCookies } from "../components/AllCookie";
 import { useAllBooks } from "../components/Allbooks";
