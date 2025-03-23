@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Book } from '../models/book';
 
-// interface 
+// interface för context
 interface AllbooksInterface {
   books: Book[];
   avgGrades: Map<string, number>;
@@ -12,10 +12,13 @@ interface AllbooksInterface {
 //skapar context för böcker fårn start
 const AllBooks = createContext<AllbooksInterface | null>(null);
 
+//
 export const BooksList: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [books, setBooks] = useState<Book[]>([]);
+  //skapar states
+  const [books, setBooks] = useState<Book[]>([]); 
   const [avgGrades, setAvgGrades] = useState<Map<string, number>>(new Map());
 
+  //provider för att dela context till  komponenter. 
   return (
     <AllBooks.Provider value={{ books, avgGrades, setBooks, setAvgGrades }}>
       {children}

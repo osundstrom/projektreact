@@ -71,6 +71,7 @@ const NewUser = () => {
       <form onSubmit={createUser}>
         <div className="form-group">
           <label className="form-label" htmlFor="username">Användarnamn:</label>
+          {/*input för användarnamn*/}
           <input
             className="form-control"
             type="text"
@@ -81,7 +82,8 @@ const NewUser = () => {
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="password">Lösenord:</label>
-          <input
+          {/*input för lösenord*/}
+          <input 
             className="form-control"
             type="password"
             id="password"

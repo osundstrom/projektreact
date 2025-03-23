@@ -5,10 +5,10 @@ import "../css/Header.css";
 import { useAllCookies } from '../components/AllCookie'; 
 
 
-
+//header som tar emot prop 
 function Header({ setCategory }: { setCategory: (category: string) => void }) {
   const navigate = useNavigate();
-  const { token, username, logout} = useAllCookies();
+  const { token, username, logout} = useAllCookies(); //hämtar från context
   
    
     const Logout = () => {
