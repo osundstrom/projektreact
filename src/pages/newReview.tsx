@@ -49,7 +49,7 @@ const newReview = () => {
                 content,
             };
 //----------------------------------POST-----------------------------------------------------------//
-            const response = await fetch("http://localhost:3000/review", {
+            const response = await fetch("https://projektreactbackend.onrender.com/review", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

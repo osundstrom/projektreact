@@ -1,4 +1,4 @@
-export interface Review {
+export interface Review { //interface en recension
     
     _id: string;
     bookId: string;

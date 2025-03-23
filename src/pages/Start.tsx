@@ -82,7 +82,7 @@ const startPage = ({category}: CategoryHeader) => {
     await Promise.all(data.items.map(async (book: Book) => { 
       
       setLoading(true); 
-      const reviews = await fetch(`http://localhost:3000/review/${book.id}`);
+      const reviews = await fetch(`https://projektreactbackend.onrender.com/review/${book.id}`);
 
       if (reviews.ok) {   //om ok 
         //console.error(reviews)

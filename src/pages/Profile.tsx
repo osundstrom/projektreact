@@ -35,10 +35,10 @@ const Profile = () => {
       try {
         let url = ""
         if (role === "admin") { //om role är admin
-        url = "http://localhost:3000/reviews"; 
+        url = "https://projektreactbackend.onrender.com/reviews"; 
         }
         if (role === "user") { //om role är user
-        url = `http://localhost:3000/reviews/user/${userId}`; 
+        url = `https://projektreactbackend.onrender.com/reviews/user/${userId}`; 
         }
         if(url) { //om url finns, fetch
         const response = await fetch(url, {

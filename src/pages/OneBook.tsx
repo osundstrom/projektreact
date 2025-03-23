@@ -40,7 +40,7 @@ const OneBook = () => {
         //--------------------------------------fetch recensioner----------------------------------------------------//
         try {
 
-        const reviewsResponse = await fetch(`http://localhost:3000/review/${bookId}`);
+        const reviewsResponse = await fetch(`https://projektreactbackend.onrender.com/review/${bookId}`);
         if (reviewsResponse.ok) { //om hittas 
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData);

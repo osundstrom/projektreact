@@ -28,7 +28,7 @@ const EditReview = () => {
         const fetchReview = async () => {
             try {
                 //hömtar recensioner baserat på id
-                const response = await fetch(`http://localhost:3000/review/one/${_id}`, {
+                const response = await fetch(`https://projektreactbackend.onrender.com/review/one/${_id}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const EditReview = () => {
             };
 //---------------------------------PUT-----------------------------------------------//
 
-            const response = await fetch(`http://localhost:3000/review/${_id}`, {
+            const response = await fetch(`https://projektreactbackend.onrender.com/review/${_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -106,7 +106,7 @@ const EditReview = () => {
 
         try {
             //fetch baserat på id
-            const response = await fetch(`http://localhost:3000/review/${_id}`, {
+            const response = await fetch(`https://projektreactbackend.onrender.com/review/${_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

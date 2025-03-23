@@ -15,33 +15,33 @@ const NewUser = () => {
   const createUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username || !password) {
+    if (!username || !password) { //om användarnamn eller lösenord ej ifyllda
       setError("Användarnamn och lösenord måste vara ifyllda");
       return;
     }
 
-    else if (username.length < 6 ) { 
+    else if (username.length < 6 ) { //om användarnamn är mindre än 6 tecken
         setError("Användarnamn måste vara minst 6 tecken");
         return; 
     }
 
-    else if (password.length < 8 ) { 
+    else if (password.length < 8 ) { //om lösenord är mindre än 8 tecken
         setError("Lösenordet måste vara minst 8 tecken");
         return; 
     }
 
-    else if (!/[A-ZÅÄÖ]/.test(password)) {  
+    else if (!/[A-ZÅÄÖ]/.test(password)) { //om lösenord ej har stor bokstav
         setError("Lösenordet måste ha en stor bokstav");
         return;
     }
     
-    else if (!/[0-9]/.test(password)) { 
+    else if (!/[0-9]/.test(password)) { //om lösenord ej har siffra
         setError("Lösenordet måste ha minst en siffra")
         return;
     }
        
-    try {
-      const response = await fetch("http://localhost:3000/register", {
+    try { //post skapa användare
+      const response = await fetch("https://projektreactbackend.onrender.com/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -66,6 +66,8 @@ const NewUser = () => {
       <div className="row justify-content-center">
       <div className="col-md-6 col-lg-4">
       <h2>Registrera ny användare</h2>
+
+      {/* Formulär frör skapa användar*/}
       <form onSubmit={createUser}>
         <div className="form-group">
           <label className="form-label" htmlFor="username">Användarnamn:</label>
@@ -84,7 +86,7 @@ const NewUser = () => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)} 
           />
         </div>
 
