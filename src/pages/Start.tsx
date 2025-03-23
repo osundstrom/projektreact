@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../css/Start.css";
+import "../css/start.css";
 import ReactPaginate from "react-paginate";
 import { Book } from "../models/book";
 import { useNavigate } from "react-router-dom";
